@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "(gdb) Launch",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bmp_reader",
+            "args": ["/home/dorothyz/project/c++/BMP-reader/materials/test_img/test5.bmp"],
+            "cwd": "${fileDirname}"
+        }
+    ]
+}

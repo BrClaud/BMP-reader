@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #include <fstream>
 #include <string>
 
@@ -16,12 +18,17 @@ void test_bytes_to_int();
 int main(int argc, char *argv[]) {
 	if (argc == 2) {
 		BMP_reader bmr;
-		if(!bmr.openBMP(argv[1])){
-			bmr.displayInfoBMP();
+		try {
+			bmr.openBMP(argv[1]);
+		} catch (const string &e) {
+			std::cerr << e << '\n';
+			exit(0);
 		}
-		
+		// bmr.displayInfoBMP();
+		bmr.displayBMP();
+
 	} else {
-		cout << "не введен путь к файлу";
+		cout << "Не введен путь к файлу";
 	}
 	return 0;
 }

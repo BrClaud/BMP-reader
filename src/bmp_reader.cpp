@@ -16,11 +16,10 @@ void BMP_reader::read(ifstream &filePath, T &result, size_t size) {
  */
 int BMP_reader::openBMP(const string &fileName) {
 	// начало открытия файла
+
 	fs.open(fileName, ios::binary);
 	if (!fs.is_open()) {
-		cout << "ошибка открытия\n";
-		// TODO throw
-		return 1;
+		throw string{"\nОшибка: не удалось открыть файл\n"};
 	}
 
 	// читаем заголовок
@@ -32,8 +31,8 @@ int BMP_reader::openBMP(const string &fileName) {
 
 	// проверка на то что это BMP файл, начинается с "BM"
 	if (fileHeader.bfType != 0x4D42) {
-		cout << "ошибка: это не BMP файл\n";
-		return 1;
+		// cout << "ошибка: это не BMP файл\n";
+		throw string{"\nОшибка: это не BMP файл\n"};
 	}
 
 	// читаем информацию
@@ -77,7 +76,20 @@ int BMP_reader::openBMP(const string &fileName) {
 			if (bytesPerPixel == 3) {
 				rgb[i][j].rgbReserved = 0;
 			} else {
-				rgb[i][j].rgbReserved = (*it)++;
+				rgb[i][j].rgbReserved = *it++;
+			}
+
+			// проверка на ЧБ
+			if (!(rgb[i][j].rgbRed == 0 && rgb[i][j].rgbGreen == 0 &&
+				  rgb[i][j].rgbBlue == 0)) {
+				if (!(rgb[i][j].rgbRed == (unsigned char)'\xff' &&
+					  rgb[i][j].rgbGreen == (unsigned char)'\xff' &&
+					  rgb[i][j].rgbBlue == (unsigned char)'\xff')) {
+					throw string{
+						"\nОшибка: BMP файл имееет цвета отличные от черного "
+						"или "
+						"белого\n"};
+				}
 			}
 		}
 	}
@@ -112,6 +124,18 @@ void BMP_reader::displayInfoBMP() {
 			cout << hex << static_cast<int>(rgb[i][j].rgbBlue) << '\t';
 			if (fileInfoHeader.biBitCount / 8 == 4)
 				cout << hex << static_cast<int>(rgb[i][j].rgbReserved) << '\t';
+		}
+		cout << '\n';
+	}
+}
+
+void BMP_reader::displayBMP() {
+	for (int i = 0; i < fileInfoHeader.biHeight; ++i) {
+		for (int j = 0; j < fileInfoHeader.biWidth; ++j) {
+			if (rgb[i][j].rgbBlue == 0)
+				cout << "\033[40m  \033[0m";  // черный
+			else
+				cout << "\033[47m  \033[0m";  // белый
 		}
 		cout << '\n';
 	}
