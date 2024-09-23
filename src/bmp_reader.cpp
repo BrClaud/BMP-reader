@@ -101,10 +101,14 @@ int BMP_reader::openBMP(const string &fileName) {
 void BMP_reader::closeBMP() { fs.close(); }
 
 void BMP_reader::displayInfoBMP() {
+	if (!fs.is_open()) {
+		throw string{"\nОшибка: файл не открыт\n"};
+	}
+	
 	// printf потому что так проще выводить много переменных и форматировать их
 	printf(
 		"bfType: %d\nbfSize: %d\nbfReserved1: %d\nbfReserved2: %d\nbfOffBits: "
-		"%d",
+		"%d\n",
 		fileHeader.bfType, fileHeader.bfSize, fileHeader.bfReserved1,
 		fileHeader.bfReserved2, fileHeader.bfOffBits);
 	printf(
@@ -116,7 +120,7 @@ void BMP_reader::displayInfoBMP() {
 		fileInfoHeader.biComression, fileInfoHeader.biSizeImage,
 		fileInfoHeader.biXPelsPerMeter, fileInfoHeader.biYPelsPerMeter,
 		fileInfoHeader.biClrUsed, fileInfoHeader.biClrImportant);
-	cout << "вывод байтов пикселей:\n";
+	cout << "pixels:\n";
 	for (int i = 0; i < fileInfoHeader.biHeight; ++i) {
 		for (int j = 0; j < fileInfoHeader.biWidth; ++j) {
 			cout << hex << static_cast<int>(rgb[i][j].rgbRed) << '\t';
@@ -130,6 +134,9 @@ void BMP_reader::displayInfoBMP() {
 }
 
 void BMP_reader::displayBMP() {
+	if (!fs.is_open()) {
+		throw string{"\nОшибка: файл не открыт\n"};
+	}
 	for (int i = 0; i < fileInfoHeader.biHeight; ++i) {
 		for (int j = 0; j < fileInfoHeader.biWidth; ++j) {
 			if (rgb[i][j].rgbBlue == 0)

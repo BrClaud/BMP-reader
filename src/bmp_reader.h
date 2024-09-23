@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 class BMP_reader {
 	typedef struct {
 		// Отметка для отличия формата от других (сигнатура
@@ -89,8 +90,8 @@ class BMP_reader {
 	~BMP_reader();
 
 	int openBMP(const string &fileName);
-	void displayBMP();
-	void displayInfoBMP();
+	virtual void displayBMP();
+	virtual void displayInfoBMP();
 	void closeBMP();
 };
 

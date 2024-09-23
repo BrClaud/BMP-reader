@@ -24,8 +24,9 @@ int main(int argc, char *argv[]) {
 			std::cerr << e << '\n';
 			exit(0);
 		}
-		// bmr.displayInfoBMP();
+		bmr.displayInfoBMP();
 		bmr.displayBMP();
+		bmr.closeBMP();
 
 	} else {
 		cout << "Не введен путь к файлу";
