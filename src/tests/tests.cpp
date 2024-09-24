@@ -74,7 +74,7 @@ TEST(NotOpenImage, diplayBMP){
     }
 }
 
-TEST(display, test_1){
+TEST(display, test_display_info){
     BMP_reader bmr("/home/dorothyz/project/c++/BMP-reader/materials/test_img/test2.bmp");
     // Перенаправляем стандартный вывод в stringstream
     std::stringstream buffer;
@@ -89,9 +89,23 @@ TEST(display, test_1){
     // Проверяем вывод
     std::string output = buffer.str();
     EXPECT_EQ(output, "pixels:\n0\t0\t0\t0\t0\t0\tff\tff\tff\t\nff\tff\tff\tff\tff\tff\t0\t0\t0\t\n");
+}
 
-// 0\t0\t0\t0\t0\t0\tff      ff      ff
-// ff      ff      ff      ff      ff      ff      0\t0\t0
+TEST(display, test_display){
+    BMP_reader bmr("/home/dorothyz/project/c++/BMP-reader/materials/test_img/test2.bmp");
+    // Перенаправляем стандартный вывод в stringstream
+    std::stringstream buffer;
+    std::streambuf* oldCoutBuffer = std::cout.rdbuf(buffer.rdbuf());
+
+    // Вызываем функцию
+    bmr.displayBMP();
+
+    // Восстанавливаем стандартный вывод
+    std::cout.rdbuf(oldCoutBuffer);
+
+    // Проверяем вывод
+    std::string output = buffer.str();
+    EXPECT_EQ(output, "\033[40m  \033[0m\033[40m  \033[0m\033[47m  \033[0m\n\033[47m  \033[0m\033[47m  \033[0m\033[40m  \033[0m\n");
 }
 
 

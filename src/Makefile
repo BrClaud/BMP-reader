@@ -5,16 +5,18 @@ GTEST_LIB = -lgtest -lgmock -pthread
 
 
 
-all : clean build run_test1 run_test2 run_test3 run_test4 run_test5 run_test6 run_test7
+all : clean build run_tests
 
 build:
 	$(CC) $(FLAGS) -g bmp_reader.cpp main.cpp -o bmp_reader
 
+run_tests: run_test1 run_test2 run_test3 run_test4 run_test5 run_test6 run_test7
+
 run_test1:
-	./bmp_reader /home/dorothyz/project/c++/BMP-reader/materials/test_img/test1.bmp
+	./bmp_reader /home/dorothyz/project/c++/BMP-reader/materials/test_img/test1.bmp 1
 
 run_test2:
-	./bmp_reader /home/dorothyz/project/c++/BMP-reader/materials/test_img/test2.bmp
+	./bmp_reader /home/dorothyz/project/c++/BMP-reader/materials/test_img/test2.bmp 1
 
 run_test3:
 	./bmp_reader /home/dorothyz/project/c++/BMP-reader/materials/test_img/abc
@@ -42,4 +44,4 @@ test: clean
 	./TEST
 
 clean:
-	rm -rf *.out bmp_reader ./*.gcda ./*.gcno TEST ./*.info
+	rm -rf *.out bmp_reader ./*.gcda ./*.gcno TEST ./*.info ./report

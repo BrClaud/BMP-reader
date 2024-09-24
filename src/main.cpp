@@ -16,7 +16,7 @@ void displayBytes(const string &path);
 void test_bytes_to_int();
 
 int main(int argc, char *argv[]) {
-	if (argc == 2) {
+	if (argc >= 2) {
 		BMP_reader bmr;
 		try {
 			bmr.openBMP(argv[1]);
@@ -24,9 +24,10 @@ int main(int argc, char *argv[]) {
 			std::cerr << e << '\n';
 			exit(0);
 		}
-		bmr.displayInfoBMP();
 		bmr.displayBMP();
-		bmr.closeBMP();
+		if (argc == 3 && *argv[2] == '1') {
+			bmr.displayInfoBMP();
+		}
 
 	} else {
 		cout << "Не введен путь к файлу";

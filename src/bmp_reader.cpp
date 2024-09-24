@@ -98,13 +98,17 @@ int BMP_reader::openBMP(const string &fileName) {
 	return 0;
 }
 
-void BMP_reader::closeBMP() { fs.close(); }
+void BMP_reader::closeBMP() {
+	if (fs.is_open()) {
+		fs.close();
+	}
+}
 
 void BMP_reader::displayInfoBMP() {
 	if (!fs.is_open()) {
 		throw string{"\nОшибка: файл не открыт\n"};
 	}
-	
+
 	// printf потому что так проще выводить много переменных и форматировать их
 	printf(
 		"bfType: %d\nbfSize: %d\nbfReserved1: %d\nbfReserved2: %d\nbfOffBits: "
